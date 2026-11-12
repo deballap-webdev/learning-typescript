@@ -1,77 +1,94 @@
-let stringArr = ["one", "hey", "Dave"]
-let guitars = ["Strat", "Les Paul", 5150,]
-let mixedData = ["EVH", 1984, true]
+// Type Alliases
+type stringOrNumber = string | number
+type stringOrNumberArray = (string | number)[]
 
-stringArr[0] = "Debbie"
-stringArr.push("hello")
-
-guitars[0] = 1984
-guitars.unshift("Lola")
-
-guitars = stringArr
-
-let test = []
-let bands: string[] = []
-bands.push("The Beatles")
-
-// Tuple
-let myTuple: [string, number, boolean] = ["Debbie", 17, true]
-
-let mixed = ['King', 12, false]
-
-mixed = myTuple
-myTuple[1] = 42
-
-//Objects
-let myObj: object
-myObj = []
-console.log(typeof myObj)
-myObj = myTuple
-myObj = bands
-myObj = {}
-
-const exampleObj = {
-    prop1: "Debbie",
-    prop2: true
-}
-
-interface Guitarist {
+type Guitarist = {
     name?: string,
-    albums: (string | number)[],
-    active: boolean
+    active: boolean,
+    albums: stringOrNumberArray
 }
 
-let evh: Guitarist = {
-    name: "Eddie",
-    active: true,
-    albums: [1984, 5150, "OU812"]
+type userId = stringOrNumber
+
+// Literal types
+let myName: "Daniel"
+let userName: "Debbie" | "Lola" | "King"
+userName = "King"
+
+// functions
+const add = (a: number, b: number): number => {
+    return a + b
 }
 
-
-let jp: Guitarist = {
-    name: "Jimmy",
-    active: true,
-    albums: ["I", "II", "IV"]
+const logMsg = (message: any): void => {
+    console.log(message)
 }
 
-evh = jp
+logMsg("Hello")
+logMsg(add(2, 3))
 
-const greetGuitarist = (guitarist: Guitarist) => {
-    if (guitarist.name) return `Hello ${guitarist.name.toUpperCase()}!`
-    return "Hello!"
+const substract = function (c: number, d: number): number {
+    return c - d
+}
+/* 
+interface mathFunc  {
+(a:number, b:number):number
+} */
+
+type mathFunc = (a: number, b: number) => number
+let multiply: mathFunc = function (e, f) {
+    return e * f
 }
 
-console.log(greetGuitarist(jp))
+logMsg(multiply(4, 8))
 
-//Enums
-// "Unlike most Typescript features, Enums are not a type-level addition to Javascript but something added to the language and runtimes"
+// optional parameters
 
-enum Grade {
-    U = 1,
-    D,
-    C,
-    B,
-    A
+const addAll = (a: number, b: number, c?: number): number => {
+    if (typeof c !== undefined) return a + b + c
+    return a + b
 }
 
-console.log(Grade.A)
+// default param
+const sumAll = (a: number = 10, b: number, c: number = 2): number => {
+    return a + b + c
+}
+
+logMsg(addAll(1, 2, 7))
+
+logMsg(sumAll(2, 1))
+logMsg(sumAll(undefined, 2))
+
+// Rest Parameters
+
+const total = (a: number, ...nums: number[]): number => {
+    return a + nums.reduce((prev, curr) => prev + curr)
+}
+
+logMsg(total(1, 2, 3))
+
+// never return type
+const createError = (errMsg: string): never => {
+    throw new Error(errMsg)
+}
+
+const infinite = () => {
+    let i: number = 1
+    while (true) {
+        i++
+        if (1 > 100) break
+    }
+}
+
+// custom type guard
+const isNumber = (value: any): boolean => {
+    return typeof value === "number" ? true : false
+}
+
+// use of the never type
+const numberOrString = (value: number | string): string => {
+    if (typeof value === "string") return "string"
+    if (isNumber(value)) return "number"
+    return createError('This should never happen!')
+}
+
