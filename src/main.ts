@@ -1,94 +1,36 @@
-// Type Alliases
-type stringOrNumber = string | number
-type stringOrNumberArray = (string | number)[]
+// Type assertion || Type casting
 
-type Guitarist = {
-    name?: string,
-    active: boolean,
-    albums: stringOrNumberArray
+type One = string
+type Two = string | number
+type Three = "hello"
+
+// cconvert to more or less specific type
+
+let a: One = "hello"
+let b = a as Two // less specific
+let c = a as Three // more specific
+
+let d = <One>"world"
+let e = <string | number>"world"
+
+const addOrConcat = (a: number, b: number, c: 'add' | 'concat'): number | string => {
+    if (c === "add") return a + b
+    return '' + a + b
 }
 
-type userId = stringOrNumber
+let myVal: string = addOrConcat(2, 2, "concat") as string
 
-// Literal types
-let myName: "Daniel"
-let userName: "Debbie" | "Lola" | "King"
-userName = "King"
+// Ts sees no problem here but a string is returned (be careful with type assetion)
+let nextVal: number = addOrConcat(2, 2, "concat") as number
 
-// functions
-const add = (a: number, b: number): number => {
-    return a + b
-}
+10 as string
+(10 as unknown) as string // force or double casting
 
-const logMsg = (message: any): void => {
-    console.log(message)
-}
+// The DOM
+const anotherImg = <HTMLImageElement>document.querySelector("#myimg") // does not work with react in tsx files
+const myImg = document.getElementById('img') as HTMLImageElement
+const img = document.querySelector('img')!
 
-logMsg("Hello")
-logMsg(add(2, 3))
-
-const substract = function (c: number, d: number): number {
-    return c - d
-}
-/* 
-interface mathFunc  {
-(a:number, b:number):number
-} */
-
-type mathFunc = (a: number, b: number) => number
-let multiply: mathFunc = function (e, f) {
-    return e * f
-}
-
-logMsg(multiply(4, 8))
-
-// optional parameters
-
-const addAll = (a: number, b: number, c?: number): number => {
-    if (typeof c !== undefined) return a + b + c
-    return a + b
-}
-
-// default param
-const sumAll = (a: number = 10, b: number, c: number = 2): number => {
-    return a + b + c
-}
-
-logMsg(addAll(1, 2, 7))
-
-logMsg(sumAll(2, 1))
-logMsg(sumAll(undefined, 2))
-
-// Rest Parameters
-
-const total = (a: number, ...nums: number[]): number => {
-    return a + nums.reduce((prev, curr) => prev + curr)
-}
-
-logMsg(total(1, 2, 3))
-
-// never return type
-const createError = (errMsg: string): never => {
-    throw new Error(errMsg)
-}
-
-const infinite = () => {
-    let i: number = 1
-    while (true) {
-        i++
-        if (1 > 100) break
-    }
-}
-
-// custom type guard
-const isNumber = (value: any): boolean => {
-    return typeof value === "number" ? true : false
-}
-
-// use of the never type
-const numberOrString = (value: number | string): string => {
-    if (typeof value === "string") return "string"
-    if (isNumber(value)) return "number"
-    return createError('This should never happen!')
-}
-
+img.src
+myImg.src
+anotherImg.src

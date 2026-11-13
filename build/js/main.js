@@ -1,63 +1,25 @@
-// Literal types
-let myName;
-let userName;
-userName = "King";
-// functions
-const add = (a, b) => {
-    return a + b;
+// Type assertion || Type casting
+// cconvert to more or less specific type
+let a = "hello";
+let b = a; // less specific
+let c = a; // more specific
+let d = "world";
+let e = "world";
+const addOrConcat = (a, b, c) => {
+    if (c === "add")
+        return a + b;
+    return '' + a + b;
 };
-const logMsg = (message) => {
-    console.log(message);
-};
-logMsg("Hello");
-logMsg(add(2, 3));
-const substract = function (c, d) {
-    return c - d;
-};
-let multiply = function (e, f) {
-    return e * f;
-};
-logMsg(multiply(4, 8));
-// optional parameters
-const addAll = (a, b, c) => {
-    if (typeof c !== undefined)
-        return a + b + c;
-    return a + b;
-};
-// default param
-const sumAll = (a = 10, b, c = 2) => {
-    return a + b + c;
-};
-logMsg(addAll(1, 2, 7));
-logMsg(sumAll(2, 1));
-logMsg(sumAll(undefined, 2));
-// Rest Parameters
-const total = (a, ...nums) => {
-    return a + nums.reduce((prev, curr) => prev + curr);
-};
-logMsg(total(1, 2, 3));
-// never return type
-const createError = (errMsg) => {
-    throw new Error(errMsg);
-};
-const infinite = () => {
-    let i = 1;
-    while (true) {
-        i++;
-        if (1 > 100)
-            break;
-    }
-};
-// custom type guard
-const isNumber = (value) => {
-    return typeof value === "number" ? true : false;
-};
-// use of the never type
-const numberOrString = (value) => {
-    if (typeof value === "string")
-        return "string";
-    if (isNumber(value))
-        return "number";
-    return createError('This should never happen!');
-};
+let myVal = addOrConcat(2, 2, "concat");
+// Ts sees no problem here but a string is returned (be careful with type assetion)
+let nextVal = addOrConcat(2, 2, "concat");
+10;
+10; // force or double casting
+// The DOM
+const anotherImg = document.querySelector("#myimg"); // does not work with react in tsx files
+const myImg = document.getElementById('img');
+const img = document.querySelector('img');
+img.src;
+myImg.src;
+anotherImg.src;
 export {};
