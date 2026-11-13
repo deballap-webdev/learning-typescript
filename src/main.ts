@@ -1,36 +1,106 @@
-// Type assertion || Type casting
+class Coder {
+    secondLang!: string
+    constructor(public readonly name: string, public music: string, private age: number, protected lang: string = 'Typescript') {
 
-type One = string
-type Two = string | number
-type Three = "hello"
+    }
 
-// cconvert to more or less specific type
-
-let a: One = "hello"
-let b = a as Two // less specific
-let c = a as Three // more specific
-
-let d = <One>"world"
-let e = <string | number>"world"
-
-const addOrConcat = (a: number, b: number, c: 'add' | 'concat'): number | string => {
-    if (c === "add") return a + b
-    return '' + a + b
+    public getAge() {
+        return `Hello, I'm ${this.age}`
+    }
 }
 
-let myVal: string = addOrConcat(2, 2, "concat") as string
+const Debbie = new Coder('Debbie', 'Classic', 17,)
 
-// Ts sees no problem here but a string is returned (be careful with type assetion)
-let nextVal: number = addOrConcat(2, 2, "concat") as number
+console.log(Debbie.getAge())
+// console.log(Debbie.age)
+// console.log(Debbie.lang)
 
-10 as string
-(10 as unknown) as string // force or double casting
+class WebDev extends Coder {
+    constructor(name: string, music: string, age: number, public computer: string) {
+        super(name, music, age)
+        this.computer = computer
+    }
 
-// The DOM
-const anotherImg = <HTMLImageElement>document.querySelector("#myimg") // does not work with react in tsx files
-const myImg = document.getElementById('img') as HTMLImageElement
-const img = document.querySelector('img')!
+    getLang() {
+        return `I write ${this.lang}`
+    }
+}
 
-img.src
-myImg.src
-anotherImg.src
+const Danny = new WebDev('Danny', 'Pop', 28, "Linux")
+console.log(Danny.getLang())
+
+// Applying interface to classes
+
+interface Musician {
+    name: string,
+    instrument: string,
+    play(action: string): string
+}
+
+class Guitarist implements Musician {
+    name: string
+    instrument: string
+    constructor(name: string, instrument: string) {
+        this.name = name
+        this.instrument = instrument
+    }
+    play(action: string): string {
+        return `${this.name} ${action} the ${this.instrument}`
+    }
+}
+
+const Page = new Guitarist("Eddy", "guitar")
+
+console.log(Page.play("strums"))
+
+//  Static members
+
+class Peeps {
+    static count: number = 0
+    static getCount() {
+        return Peeps.count
+    }
+    public id: number
+    constructor(public name: string) {
+        this.name = name,
+            this.id = ++Peeps.count
+    }
+}
+
+const Love = new Peeps('Love')
+const Gabriel = new Peeps('Gabriel')
+const Divine = new Peeps("Divine")
+console.log(Peeps.count)
+console.log(Gabriel.id)
+console.log(Love.id)
+console.log(Divine.id)
+
+// keeping State in instantiated Classes
+
+class Bands {
+    dataState: string[]
+
+    constructor() {
+        this.dataState = []
+    }
+
+    public get data(): string[] {
+        return this.dataState
+    }
+
+    public set data(value: string[]) {
+        if (Array.isArray(value) && value.every(el => typeof el === "string")) {
+            this.dataState = value
+        } else
+            throw new Error("Param is not an array of strings")
+
+
+    }
+}
+
+const MyBands = new Bands()
+MyBands.data = ['Neil Young', 'Led Zep']
+console.log(MyBands.data)
+MyBands.data = [...MyBands.data, "ZZ top"]
+console.log(MyBands.data)
+MyBands.data = ["Van Helen", 5150]
