@@ -1,49 +1,70 @@
-// Index Signatures
-/* interface TransactionObj {
-    readonly [index: string]: number
-} */
-const todaysTransactions = {
-    Pizza: -10,
-    Books: -5,
-    Job: 50
+//const stringEcho = (arg: string) : string => arg
+const echo = (arg) => arg;
+const isObj = (arg) => {
+    return (typeof arg === "object" && !Array.isArray(arg) && arg !== null);
 };
-console.log(todaysTransactions["Pizza"]);
-console.log(todaysTransactions.Pizza);
-const prop = "Pizza";
-console.log(todaysTransactions[prop]);
-const todaysNet = (transactions) => {
-    let total = 0;
-    for (const transaction in transactions) {
-        total += transactions[transaction] ?? 0;
+console.log(isObj(true));
+console.log(isObj('Jhon'));
+console.log(isObj([1, 2, 3]));
+console.log(isObj({ name: 'Jhon' }));
+console.log(isObj(null));
+const isTrue = (arg) => {
+    if (Array.isArray(arg) && !arg.length) {
+        return { arg, is: false };
     }
-    return total;
+    if (isObj(arg) && !Object.keys(arg).length) {
+        return { arg, is: false };
+    }
+    return { arg, is: !!arg };
 };
-console.log(todaysNet(todaysTransactions));
-const student = {
-    name: "Kofi",
-    GPA: 3.67,
-    classes: [100, 200]
+console.log(isTrue(false));
+console.log(isTrue(0));
+console.log(isTrue(true));
+console.log(isTrue(1));
+console.log(isTrue("Debbie"));
+console.log(isTrue(''));
+console.log(isTrue(null));
+console.log(isTrue(undefined));
+console.log(isTrue({})); // modified
+console.log(isTrue({ name: "Debbie" }));
+console.log(isTrue([])); // modified
+console.log(isTrue([1, 2, 3]));
+console.log(isTrue(NaN));
+console.log(isTrue(-0));
+const checkBoolValue = (arg) => {
+    if (Array.isArray(arg) && !arg.length) {
+        return { arg, is: false };
+    }
+    if (isObj(arg) && !Object.keys(arg).length) {
+        return { arg, is: false };
+    }
+    return { arg, is: !!arg };
 };
-// console.log(student.test)
-// for (const key in student) {
-//     console.log(`${key}: ${student[key]}`)
-// }
-// Iterating through objects we haven't ptovided an index signature for
-for (const key in student) {
-    console.log(`${key}: ${student[key]}`);
+const processUser = (user) => {
+    // process process User
+    return user;
+};
+console.log(processUser({ id: 1, name: "Debbie" }));
+//console.log(processUser({ name: "Debbie" }))
+const getUsersProperty = (users, Key) => {
+    return users.map(user => user[Key]);
+};
+class StateObject {
+    data;
+    constructor(value) {
+        this.data = value;
+    }
+    get state() {
+        return this.data;
+    }
+    set state(value) {
+        this.data = value;
+    }
 }
-// Another Example
-Object.keys(student).map(key => console.log(student[key]));
-const logStudentKey = (student, key) => {
-    console.log(`Student ${key} : ${student[key]}`);
-};
-logStudentKey(student, "name");
-const monthlyIncome = {
-    "salary": 500,
-    "bonus": 100,
-    "sidehustle": 250
-};
-for (const revenue in monthlyIncome) {
-    console.log(monthlyIncome[revenue]);
-}
+const store = new StateObject("Jhon");
+console.log(store.state);
+store.state = "Debbie";
+const myState = new StateObject([28]);
+myState.state = (['Debbie', 17, true]);
+console.log(myState.state);
 export {};

@@ -1,97 +1,93 @@
-// Index Signatures
+//const stringEcho = (arg: string) : string => arg
+const echo = <T>(arg: T): T => arg
 
-interface TransactionObj {
-    readonly [index: string]: number
-    Pizza: number,
-    Books: number,
-    Job: number
+const isObj = <T>(arg: T): boolean => {
+    return (typeof arg === "object" && !Array.isArray(arg) && arg !== null)
 }
 
+console.log(isObj(true))
+console.log(isObj('Jhon'))
+console.log(isObj([1, 2, 3]))
+console.log(isObj({ name: 'Jhon' }))
+console.log(isObj(null))
 
-/* interface TransactionObj {
-    readonly [index: string]: number
-} */
-
-const todaysTransactions: TransactionObj = {
-
-    Pizza: -10,
-    Books: -5,
-    Job: 50
+const isTrue = <T>(arg: T): { arg: T, is: boolean } => {
+    if (Array.isArray(arg) && !arg.length) {
+        return { arg, is: false }
+    }
+    if (isObj(arg) && !Object.keys(arg as keyof T).length) {
+        return { arg, is: false }
+    }
+    return { arg, is: !!arg }
 }
 
-console.log(todaysTransactions["Pizza"])
-console.log(todaysTransactions.Pizza)
+console.log(isTrue(false))
+console.log(isTrue(0))
+console.log(isTrue(true))
+console.log(isTrue(1))
+console.log(isTrue("Debbie"))
+console.log(isTrue(''))
+console.log(isTrue(null))
+console.log(isTrue(undefined))
+console.log(isTrue({})) // modified
+console.log(isTrue({ name: "Debbie" }))
+console.log(isTrue([])) // modified
+console.log(isTrue([1, 2, 3]))
+console.log(isTrue(NaN))
+console.log(isTrue(-0))
 
-const prop: string = "Pizza"
+interface BoolCheck<T> {
+    arg: T,
+    is: boolean
+}
 
-console.log(todaysTransactions[prop])
+const checkBoolValue = <T>(arg: T): BoolCheck<T> => {
+    if (Array.isArray(arg) && !arg.length) {
+        return { arg, is: false }
+    }
+    if (isObj(arg) && !Object.keys(arg as keyof T).length) {
+        return { arg, is: false }
+    }
+    return { arg, is: !!arg }
+}
 
-const todaysNet = (transactions: TransactionObj): number => {
-    let total = 0
+interface HasID {
+    id: number
+}
 
-    for (const transaction in transactions) {
-        total += transactions[transaction] ?? 0
+const processUser = <T extends HasID>(user: T) => {
+    // process process User
+    return user
+}
+
+console.log(processUser({ id: 1, name: "Debbie" }))
+//console.log(processUser({ name: "Debbie" }))
+
+const getUsersProperty = <T extends HasID, K extends keyof T>(users: T[], Key: K): T[K][] => {
+    return users.map(user => user[Key])
+}
+
+class StateObject<T> {
+    private data: T
+    constructor(value: T) {
+        this.data = value
     }
 
-    return total
+    get state(): T {
+        return this.data
+    }
+
+    set state(value: T) {
+        this.data = value
+    }
 }
 
-console.log(todaysNet(todaysTransactions))
+const store = new StateObject("Jhon")
+console.log(store.state)
+store.state = "Debbie"
 
-// todaysTransactions.Pizza = 60 (error index signature only permits reading)
+const myState = new StateObject<(string | number | boolean)[]>([28])
 
-// More Examples
-interface Student {
-    //[index: string]: string | number | number[]
-    name: string,
-    GPA: number,
-    classes?: number[],
-}
+myState.state = (['Debbie', 17, true])
 
-const student: Student = {
-    name: "Kofi",
-    GPA: 3.67,
-    classes: [100, 200]
-}
-
-// console.log(student.test)
-
-// for (const key in student) {
-//     console.log(`${key}: ${student[key]}`)
-// }
-
-
-// Iterating through objects we haven't ptovided an index signature for
-for (const key in student) {
-    console.log(`${key}: ${student[key as keyof typeof student]}`)
-}
-
-
-// Another Example
-
-Object.keys(student).map(key => console.log(student[key as keyof typeof student]))
-const logStudentKey = (student: Student, key: keyof Student): void => {
-    console.log(`Student ${key} : ${student[key]}`)
-}
-
-logStudentKey(student, "name")
-
-// 
-
-// interface Income {
-//     [key: string]: number
-// }
-
-type Streams = 'salary' | 'bonus' | 'sidehustle'
-
-type Income = Record<Streams, number>
-
-const monthlyIncome: Income = {
-    "salary": 500,
-    "bonus": 100,
-    "sidehustle": 250
-}
-
-for (const revenue in monthlyIncome) {
-    console.log(monthlyIncome[revenue as keyof Income])
-}
+console.log(myState.state)
