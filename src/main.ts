@@ -1,106 +1,97 @@
-class Coder {
-    secondLang!: string
-    constructor(public readonly name: string, public music: string, private age: number, protected lang: string = 'Typescript') {
+// Index Signatures
 
-    }
-
-    public getAge() {
-        return `Hello, I'm ${this.age}`
-    }
+interface TransactionObj {
+    readonly [index: string]: number
+    Pizza: number,
+    Books: number,
+    Job: number
 }
 
-const Debbie = new Coder('Debbie', 'Classic', 17,)
 
-console.log(Debbie.getAge())
-// console.log(Debbie.age)
-// console.log(Debbie.lang)
+/* interface TransactionObj {
+    readonly [index: string]: number
+} */
 
-class WebDev extends Coder {
-    constructor(name: string, music: string, age: number, public computer: string) {
-        super(name, music, age)
-        this.computer = computer
-    }
+const todaysTransactions: TransactionObj = {
 
-    getLang() {
-        return `I write ${this.lang}`
-    }
+    Pizza: -10,
+    Books: -5,
+    Job: 50
 }
 
-const Danny = new WebDev('Danny', 'Pop', 28, "Linux")
-console.log(Danny.getLang())
+console.log(todaysTransactions["Pizza"])
+console.log(todaysTransactions.Pizza)
 
-// Applying interface to classes
+const prop: string = "Pizza"
 
-interface Musician {
+console.log(todaysTransactions[prop])
+
+const todaysNet = (transactions: TransactionObj): number => {
+    let total = 0
+
+    for (const transaction in transactions) {
+        total += transactions[transaction] ?? 0
+    }
+
+    return total
+}
+
+console.log(todaysNet(todaysTransactions))
+
+// todaysTransactions.Pizza = 60 (error index signature only permits reading)
+
+// More Examples
+interface Student {
+    //[index: string]: string | number | number[]
     name: string,
-    instrument: string,
-    play(action: string): string
+    GPA: number,
+    classes?: number[],
 }
 
-class Guitarist implements Musician {
-    name: string
-    instrument: string
-    constructor(name: string, instrument: string) {
-        this.name = name
-        this.instrument = instrument
-    }
-    play(action: string): string {
-        return `${this.name} ${action} the ${this.instrument}`
-    }
+const student: Student = {
+    name: "Kofi",
+    GPA: 3.67,
+    classes: [100, 200]
 }
 
-const Page = new Guitarist("Eddy", "guitar")
+// console.log(student.test)
 
-console.log(Page.play("strums"))
+// for (const key in student) {
+//     console.log(`${key}: ${student[key]}`)
+// }
 
-//  Static members
 
-class Peeps {
-    static count: number = 0
-    static getCount() {
-        return Peeps.count
-    }
-    public id: number
-    constructor(public name: string) {
-        this.name = name,
-            this.id = ++Peeps.count
-    }
+// Iterating through objects we haven't ptovided an index signature for
+for (const key in student) {
+    console.log(`${key}: ${student[key as keyof typeof student]}`)
 }
 
-const Love = new Peeps('Love')
-const Gabriel = new Peeps('Gabriel')
-const Divine = new Peeps("Divine")
-console.log(Peeps.count)
-console.log(Gabriel.id)
-console.log(Love.id)
-console.log(Divine.id)
 
-// keeping State in instantiated Classes
+// Another Example
 
-class Bands {
-    dataState: string[]
-
-    constructor() {
-        this.dataState = []
-    }
-
-    public get data(): string[] {
-        return this.dataState
-    }
-
-    public set data(value: string[]) {
-        if (Array.isArray(value) && value.every(el => typeof el === "string")) {
-            this.dataState = value
-        } else
-            throw new Error("Param is not an array of strings")
-
-
-    }
+Object.keys(student).map(key => console.log(student[key as keyof typeof student]))
+const logStudentKey = (student: Student, key: keyof Student): void => {
+    console.log(`Student ${key} : ${student[key]}`)
 }
 
-const MyBands = new Bands()
-MyBands.data = ['Neil Young', 'Led Zep']
-console.log(MyBands.data)
-MyBands.data = [...MyBands.data, "ZZ top"]
-console.log(MyBands.data)
-MyBands.data = ["Van Helen", 5150]
+logStudentKey(student, "name")
+
+// 
+
+// interface Income {
+//     [key: string]: number
+// }
+
+type Streams = 'salary' | 'bonus' | 'sidehustle'
+
+type Income = Record<Streams, number>
+
+const monthlyIncome: Income = {
+    "salary": 500,
+    "bonus": 100,
+    "sidehustle": 250
+}
+
+for (const revenue in monthlyIncome) {
+    console.log(monthlyIncome[revenue as keyof Income])
+}
