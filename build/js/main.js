@@ -1,70 +1,68 @@
-//const stringEcho = (arg: string) : string => arg
-const echo = (arg) => arg;
-const isObj = (arg) => {
-    return (typeof arg === "object" && !Array.isArray(arg) && arg !== null);
+// Utility Types
+const updateAssignment = (assign, propsToUpdate) => {
+    return { ...assign, ...propsToUpdate };
 };
-console.log(isObj(true));
-console.log(isObj('Jhon'));
-console.log(isObj([1, 2, 3]));
-console.log(isObj({ name: 'Jhon' }));
-console.log(isObj(null));
-const isTrue = (arg) => {
-    if (Array.isArray(arg) && !arg.length) {
-        return { arg, is: false };
-    }
-    if (isObj(arg) && !Object.keys(arg).length) {
-        return { arg, is: false };
-    }
-    return { arg, is: !!arg };
+const assign1 = {
+    studentId: "eleng139",
+    title: "Final Project",
+    grade: 0
 };
-console.log(isTrue(false));
-console.log(isTrue(0));
-console.log(isTrue(true));
-console.log(isTrue(1));
-console.log(isTrue("Debbie"));
-console.log(isTrue(''));
-console.log(isTrue(null));
-console.log(isTrue(undefined));
-console.log(isTrue({})); // modified
-console.log(isTrue({ name: "Debbie" }));
-console.log(isTrue([])); // modified
-console.log(isTrue([1, 2, 3]));
-console.log(isTrue(NaN));
-console.log(isTrue(-0));
-const checkBoolValue = (arg) => {
-    if (Array.isArray(arg) && !arg.length) {
-        return { arg, is: false };
-    }
-    if (isObj(arg) && !Object.keys(arg).length) {
-        return { arg, is: false };
-    }
-    return { arg, is: !!arg };
+console.log(updateAssignment(assign1, { grade: 95 }));
+const assignGraded = updateAssignment(assign1, { grade: 95 });
+// Required and Readonly
+const recordAssignment = (assign) => {
+    // send to database, etc.
+    return assign;
 };
-const processUser = (user) => {
-    // process process User
-    return user;
+const assignVerified = { ...assignGraded, verified: true };
+console.log(recordAssignment({ ...assignGraded, verified: true }));
+const finalGrades = {
+    "Kelly": "B",
+    "Sara": "U"
 };
-console.log(processUser({ id: 1, name: "Debbie" }));
-//console.log(processUser({ name: "Debbie" }))
-const getUsersProperty = (users, Key) => {
-    return users.map(user => user[Key]);
+const gradeData = {
+    "Kelly": {
+        assign1: 89,
+        assign2: 72
+    },
+    "Sara": {
+        assign1: 63,
+        assign2: 21
+    }
 };
-class StateObject {
-    data;
-    constructor(value) {
-        this.data = value;
-    }
-    get state() {
-        return this.data;
-    }
-    set state(value) {
-        this.data = value;
-    }
-}
-const store = new StateObject("Jhon");
-console.log(store.state);
-store.state = "Debbie";
-const myState = new StateObject([28]);
-myState.state = (['Debbie', 17, true]);
-console.log(myState.state);
+const hexCode = {
+    red: "FF0000",
+    green: "00FF00",
+    blue: "0000FF"
+};
+const score = {
+    studentId: "eng248",
+    grade: 89
+};
+const preview = {
+    studentId: "eng248",
+    title: "Final Year Project",
+};
+// ReturnType
+/* type newAssign = {
+    title: string,
+    points: number
+} */
+const createNewAssign = (title, points) => {
+    return { title, points };
+};
+const tsAssign = createNewAssign("Utility tpes", 100);
+console.log(tsAssign);
+const assignArgs = ["Generic", 100];
+const tsAssign2 = createNewAssign(...assignArgs);
+const fetchUsers = async () => {
+    const data = await fetch('https://jsonplaceholder.typicode.com/users').then(res => {
+        return res.json();
+    }).catch(err => {
+        if (err instanceof Error)
+            console.log(err.message);
+    });
+    return data;
+};
+fetchUsers().then(users => console.log(users));
 export {};
