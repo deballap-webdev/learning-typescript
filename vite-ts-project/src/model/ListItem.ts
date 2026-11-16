@@ -1,32 +1,34 @@
 interface Item {
-    _id: string,
-    _item: string,
-    _checked: boolean,
+    id: string,
+    item: string,
+    checked: boolean,
 }
 
 export default class LisItem implements Item {
-    constructor(private id: string, private item: string, private checked: boolean) {
-        this._id = id,
-            this._item = item,
-            this._checked = checked
+
+    constructor(private _id: string = "", private _item: string = "", private _checked: boolean = false) {
     }
 
-    getId(): string {
-        return this.id,
+    get id(): string {
+        return this._id
     }
 
-    getItem(): string {
-        return this.item
+    get item(): string {
+        return this._item
     }
 
-    getChecked(): boolean {
-        return this.checked
+    get checked(): boolean {
+        return this._checked
     }
 
-    setId(id): void {
-
+    set id(id: string) {
+        this._id = id
     }
-
-
+    set item(item: string) {
+        this._item = item
+    }
+    set checked(checked: boolean) {
+        this._checked = checked
+    }
 
 }
