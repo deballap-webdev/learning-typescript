@@ -16,12 +16,14 @@ const initApp = (): void => {
     const newEntryText: string = input.value.trim()
     if (!newEntryText) return
 
-    const newEntryId = fullList.list.length ? Number(fullList.list[fullList.list.length - 1].id) + 1 : 0
+    const newEntryId: number = fullList.list.length ? Number(fullList.list[fullList.list.length - 1].id) + 1 : 0
+    const newEntry = new LisItem(newEntryId.toString(), newEntryText)
 
-    const newEntry = new LisItem(newEntryId.toString(), newEntryText, false)
 
     fullList.addItem(newEntry)
     template.render(fullList)
+    input.value = ""
+    input.focus()
   })
 
   const clearItems = document.getElementById("clearItemsButton") as HTMLButtonElement
