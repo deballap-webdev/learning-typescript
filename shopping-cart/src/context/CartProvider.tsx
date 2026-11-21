@@ -1,4 +1,4 @@
-import { ReactElement, createContext, useMemo, useReducer } from "react"
+import { type ReactElement, createContext, useMemo, useReducer } from "react"
 
 export type CartItemType = {
     sku: string,
