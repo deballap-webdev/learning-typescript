@@ -86,7 +86,7 @@ const useCartContext = (initCartState: CartStateType) => {
 
     const totalItems = state.cart.reduce((previousValue, cartItem) => previousValue + cartItem.qty, 0)
 
-    const totalPrice = state.cart.reduce((previousValue, cartItem) => previousValue + (cartItem.qty * cartItem.price), 0)
+    const totalPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(state.cart.reduce((previousValue, cartItem) => previousValue + (cartItem.qty * cartItem.price), 0))
 
     const cart = state.cart.sort((a, b) => {
         const itemA = Number(a.sku.slice(-4))
@@ -103,7 +103,7 @@ const initCartContextState: UseCartContextType = {
     dispatch: () => { },
     REDUCER_ACTIONS: REDUCER_ACTION_TYPE,
     totalItems: 0,
-    totalPrice: 0,
+    totalPrice: "",
     cart: []
 }
 
