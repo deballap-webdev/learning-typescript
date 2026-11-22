@@ -25,7 +25,7 @@ const CartLineItem = ({ item, dispatch, REDUCER_ACTIONS }: CartLIPropType) => {
   );
 
   const options: ReactElement[] = optionValues.map((val) => (
-    <option key={`opt${val}`} value={val}>
+    <option key={`opt${val}`} value={val} selected={item.qty === val}>
       {val}
     </option>
   ));
