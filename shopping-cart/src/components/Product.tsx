@@ -53,13 +53,15 @@ const Product = ({
 };
 
 function areProductsEqual(
-  { product: prevProduct }: ProductPropsType,
-  { product: nextProduct }: ProductPropsType,
+  { product: prevProduct, inCart: prevInCart }: ProductPropsType,
+  { product: nextProduct, inCart: nexInCart }: ProductPropsType,
 ) {
-  return Object.keys(prevProduct).every(
-    (key) =>
-      prevProduct[key as keyof ProductType] ===
-      nextProduct[key as keyof ProductType],
+  return (
+    Object.keys(prevProduct).every(
+      (key) =>
+        prevProduct[key as keyof ProductType] ===
+        nextProduct[key as keyof ProductType],
+    ) && prevInCart === nexInCart
   );
 }
 
