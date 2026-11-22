@@ -3,7 +3,7 @@ import {
   type ReducerActionType,
   type ReducerAction,
 } from "../context/CartProvider";
-import type { ReactElement } from "react";
+import { type ReactElement, memo } from "react";
 import useCart from "../Hooks/useCart";
 
 type ProductPropsType = {
@@ -23,7 +23,9 @@ const Product = ({
     .href;
 
   const { cart } = useCart();
+
   const productInCart = cart.find((prod) => product.sku === prod.sku);
+
   const qty = productInCart ? productInCart.qty : 0;
 
   const onAddToCart = () =>
@@ -50,4 +52,17 @@ const Product = ({
   return content;
 };
 
-export default Product;
+function areProductsEqual(
+  { product: prevProduct }: ProductPropsType,
+  { product: nextProduct }: ProductPropsType,
+) {
+  return Object.keys(prevProduct).every(
+    (key) =>
+      prevProduct[key as keyof ProductType] ===
+      nextProduct[key as keyof ProductType],
+  );
+}
+
+const memoizedProduct = memo<typeof Product>(Product, areProductsEqual);
+
+export default memoizedProduct;
